@@ -1,10 +1,10 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
+const routes = require('./Routes/Routes')
+
 //Carregando as variáveis de ambiente
 require('dotenv').config()
-//Importante um Model
-const User = require('./Models/User')
 
 //-->Permitindo a leitura de JSON
 app.use(express.urlencoded({
@@ -14,23 +14,8 @@ app.use(express.urlencoded({
 app.use(express.json())
 //-->Permitindo a leitura de JSON [FIM]
 
-//Endpoint Teste
-app.get('/Home', (req, res) => {
-  res.status(200).send({ message: 'Seja bem vindo!' })
-})
-
-app.post('/Login', async (req, res) => {
-  const data = req.body
-  console.log('data', data)
-  try {
-    await User.create(data)
-    if (data) {
-      res.status(200).send('Usuário criado com sucesso!')
-    }
-  } catch (err) {
-    console.log('Erro ao criar o usuário')
-  }
-})
+//Acessando o roteamento
+app.use('/user', routes)
 
 //Conexão com o Banco de Dados
 mongoose
